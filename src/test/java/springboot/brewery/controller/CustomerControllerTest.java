@@ -1,4 +1,4 @@
-package guru.springframework.spring6restmvc.controller;
+package springboot.brewery.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

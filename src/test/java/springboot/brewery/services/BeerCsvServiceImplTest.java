@@ -1,4 +1,4 @@
-package guru.springframework.spring6restmvc.services;
+package springboot.brewery.services;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.util.ResourceUtils;

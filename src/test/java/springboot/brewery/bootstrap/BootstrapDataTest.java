@@ -1,4 +1,4 @@
-package guru.springframework.spring6restmvc.bootstrap;
+package springboot.brewery.bootstrap;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

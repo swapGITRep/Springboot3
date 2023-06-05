@@ -1,4 +1,4 @@
-package guru.springframework.spring6restmvc.repositories;
+package springboot.brewery.repositories;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

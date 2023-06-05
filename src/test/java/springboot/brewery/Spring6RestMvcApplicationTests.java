@@ -1,4 +1,4 @@
-package guru.springframework.spring6restmvc;
+package springboot.brewery;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,4 +1,4 @@
-package guru.springframework.spring6restmvc.repositories;
+package springboot.brewery.repositories;
 
 import jakarta.validation.ConstraintViolationException;
 import springboot.brewery.bootstrap.BootstrapData;

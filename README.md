@@ -16,4 +16,4 @@ The application is a simple Spring Boot 3 / Spring Framework 6 web application.
 
 
 ## Connect with me
-* Connect with Swapnil Nayak on [LinkedIn](http://www.linkedin.com/in/swapi4u)
+* Connect with Swapnil Nayak on [LinkedIn](http://www.linkedin.com/in/swapnilnayak)

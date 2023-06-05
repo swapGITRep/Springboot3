@@ -14,7 +14,7 @@
         update_date timestamp,
         version integer,
         primary key (id)
-    );
+    ) ENGINE = InnoDB;
 
     create table customer (
        id varchar(36) not null,
@@ -23,4 +23,4 @@
         update_date timestamp,
         version integer,
         primary key (id)
-    ) ;
+    ) ENGINE = InnoDB;
