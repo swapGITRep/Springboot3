@@ -15,7 +15,7 @@ create table beer_category
     beer_id     varchar(36) NOT NULL,
     category_id varchar(36) NOT NULL,
     primary key (beer_id, category_id),
-    constraint fk_beer FOREIGN KEY (beer_id) references beer (id),
+    constraint fk_beer1 FOREIGN KEY (beer_id) references beer (id),
     constraint fk_category FOREIGN KEY (category_id) references category (id)
 ) ;
 
