@@ -7,12 +7,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+
 
 /**
  * Created by jt, Spring Framework Guru.
@@ -35,13 +38,20 @@ public class SpringSecConfig {
             "/swagger-ui/**",
             // -- Authorization server
             "/oauth2/token/revokeById/**",
-            "/tokens/**"
+            "/tokens/**",
+            // other public endpoints
+            "/h2-console/**"
             
             // other public endpoints of your API may be appended to this array
     };
 	
 	
-    @Bean
+	 @Bean
+	 public WebSecurityCustomizer webSecurityCustomizer() {
+		 return (web) -> web.ignoring().requestMatchers(new AntPathRequestMatcher("/h2-console/**"));
+	 }
+	
+	@Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable().
         authorizeHttpRequests()
@@ -55,6 +65,8 @@ public class SpringSecConfig {
         
         // Make communication STATELESS
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		
+		http.headers(headers -> headers.frameOptions().disable());
 
         return http.build();
     }

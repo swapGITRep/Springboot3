@@ -1,9 +1,7 @@
+drop table if exists beer CASCADE;
+drop table if exists customer CASCADE;
 
-    drop table if exists beer CASCADE;
-
-    drop table if exists customer CASCADE;
-
-    create table beer (
+create table beer (
        id varchar(36) not null,
         beer_name varchar(50) not null,
         beer_style smallint not null,
@@ -14,13 +12,13 @@
         update_date timestamp,
         version integer,
         primary key (id)
-    ) ENGINE = InnoDB;
+); --ENGINE = InnoDB;
 
-    create table customer (
+create table customer (
        id varchar(36) not null,
         created_date timestamp,
         name varchar(255),
         update_date timestamp,
         version integer,
         primary key (id)
-    ) ENGINE = InnoDB;
+); --ENGINE = InnoDB;

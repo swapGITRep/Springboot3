@@ -10,16 +10,13 @@ import springboot.brewery.entities.Beer;
 import springboot.brewery.entities.BeerOrder;
 import springboot.brewery.entities.BeerOrderShipment;
 import springboot.brewery.entities.Customer;
-import springboot.brewery.repositories.BeerOrderRepository;
-import springboot.brewery.repositories.BeerRepository;
-import springboot.brewery.repositories.CustomerRepository;
 
 @SpringBootTest
 class BeerOrderRepositoryTest {
 
     @Autowired
     BeerOrderRepository beerOrderRepository;
-
+;
     @Autowired
     CustomerRepository customerRepository;
 
@@ -50,6 +47,7 @@ class BeerOrderRepositoryTest {
 
 
         System.out.println(savedBeerOrder.getCustomerRef());
+        System.out.println(savedBeerOrder);
     }
 }
 

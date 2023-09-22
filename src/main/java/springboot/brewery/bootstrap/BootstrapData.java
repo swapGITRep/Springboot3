@@ -36,9 +36,9 @@ public class BootstrapData implements CommandLineRunner {
     @Transactional
     @Override
     public void run(String... args) throws Exception {
-        loadBeerData();
-        loadCsvData();
-        loadCustomerData();
+        //loadBeerData();
+        //loadCsvData();
+        //loadCustomerData();
     }
 
     private void loadCsvData() throws FileNotFoundException {
@@ -117,6 +117,7 @@ public class BootstrapData implements CommandLineRunner {
             Customer customer1 = Customer.builder()
                     .id(UUID.randomUUID())
                     .name("Customer 1")
+                    .email("customer1@gmail.com")
                     .version(1)
                     .createdDate(LocalDateTime.now())
                     .updateDate(LocalDateTime.now())
@@ -125,6 +126,7 @@ public class BootstrapData implements CommandLineRunner {
             Customer customer2 = Customer.builder()
                     .id(UUID.randomUUID())
                     .name("Customer 2")
+                    .email("customer2@yahoo.com")
                     .version(1)
                     .createdDate(LocalDateTime.now())
                     .updateDate(LocalDateTime.now())
@@ -133,6 +135,7 @@ public class BootstrapData implements CommandLineRunner {
             Customer customer3 = Customer.builder()
                     .id(UUID.randomUUID())
                     .name("Customer 3")
+                    .email("customer3@microsoft.com")
                     .version(1)
                     .createdDate(LocalDateTime.now())
                     .updateDate(LocalDateTime.now())
