@@ -3,9 +3,12 @@ package gov.brewery.controller;
 import com.deloitte.nextgen.framework.commons.enums.MessageType;
 import com.deloitte.nextgen.framework.commons.exceptions.IdentifierException;
 import com.deloitte.nextgen.framework.commons.payload.response.ApiResponse;
+import com.deloitte.nextgen.framework.commons.payload.response.AuthResponse;
 import com.deloitte.nextgen.framework.commons.utils.ValidationUtils;
 import com.deloitte.nextgen.framework.commons.utils.WordUtils;
+import com.nimbusds.jose.JOSEException;
 import gov.brewery.entities.Beer;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,6 +28,8 @@ import gov.brewery.model.BeerDTO;
 import gov.brewery.model.BeerStyle;
 import gov.brewery.services.BeerMainService;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -143,5 +148,41 @@ public class BeerController {
                 .forEach(beer -> log.info("Print Beer {}",beer));
     }
 
+    @PostMapping(value = "/token")
+    public AuthResponse getjwtToken(@RequestParam("token") String token) throws JOSEException, ParseException, IOException, ParseException, IOException, JOSEException {
 
+        return beerService.getToken(token);
+    }
+
+
+    @PostMapping("/saveEmp")
+    public String saveEmployee(@RequestParam String empId) {
+        return beerService.getEmployee(empId);
+    }
+
+    @PutMapping("/updateEmp")
+    public String updateEmployee(@RequestParam String empId) {
+        return beerService.updateEmployee(empId);
+    }
+
+    @DeleteMapping("delete/{id}")
+    public  void deleteEmployee(@RequestParam String empId) {
+        beerService.deleteEmployee(empId);
+    }
+
+
+    @GetMapping("/getEmpByBean")
+    public String getEmployeeCacheFromBeen(@RequestParam String key) {
+        return beerService.getEmployeefromBean(key);
+    }
+
+    @GetMapping("/checkLogs")
+    public String checkForLogs(@RequestParam String key) {
+        return beerService.checkForLog(key);
+    }
+
+    @GetMapping("/timeShifer")
+    public String getTimeShifterValue(@RequestParam String value) {
+        return beerService.getTime(value);
+    }
 }

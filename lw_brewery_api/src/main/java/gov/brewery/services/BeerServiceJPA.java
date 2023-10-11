@@ -1,12 +1,20 @@
 package gov.brewery.services;
 
-import gov.brewery.entities.QBeer;
-import gov.brewery.model.CustomerResponseDTO;
+import com.deloitte.nextgen.framework.commons.payload.response.AuthResponse;
+import com.deloitte.nextgen.framework.commons.spi.ReferenceTable;
+import com.deloitte.nextgen.framework.logging.LogMarker;
+import com.deloitte.nextgen.framework.security.spi.TokenService;
+import com.nimbusds.jose.JOSEException;
 import gov.brewery.repositories.IBeerCustomRepository;
-import gov.brewery.repositories.ICustomerCustomRepository;
 import lombok.RequiredArgsConstructor;
 
-import org.apache.commons.collections4.IterableUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,12 +28,10 @@ import gov.brewery.generated.repository.BeerRepository;
 import gov.brewery.mappers.BeerMapper;
 import gov.brewery.model.BeerDTO;
 import gov.brewery.model.BeerStyle;
-import gov.brewery.repositories.BeerRepo;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -34,12 +40,22 @@ import java.util.concurrent.atomic.AtomicReference;
 @Service
 @Primary
 @RequiredArgsConstructor
+@Slf4j
 public class BeerServiceJPA implements BeerMainService {
     private final BeerRepository beerRepository;
     private final BeerMapper beerMapper;
     private final IBeerCustomRepository beerCustomRepository;
     private static final int DEFAULT_PAGE = 0;
     private static final int DEFAULT_PAGE_SIZE = 25;
+
+    @Autowired
+    TokenService jwtTokenService;
+
+    @Autowired
+    private ReferenceTable reftableManager;
+
+    @Autowired
+    private CacheManager cacheManager;
 
     @Override
     public Page<BeerDTO> listBeers(String beerName, BeerStyle beerStyle, Boolean showInventory,
@@ -184,6 +200,75 @@ public class BeerServiceJPA implements BeerMainService {
             beerDTOS.add(beerDTO);
         });
         return beerDTOS;
+    }
+
+    @Override
+    public AuthResponse getToken(String token) throws JOSEException, ParseException, IOException {
+
+        Map<String, Object> claims =  jwtTokenService.validate(token);
+
+        Map<String,Object> newClaims = new HashMap<>(claims);
+
+        newClaims.put("fname", "aayush");
+        newClaims.put("laame", "sdjhgcz");
+
+
+
+        return   jwtTokenService.expiring((String) claims.get("sub"), newClaims);
+    }
+
+    @Override
+    @Cacheable(value = "employeeCache", key="#empId" )
+    public String getEmployee(String empId) {
+        System.out.println(" the record with id : " + empId);
+        Cache cache = cacheManager.getCache(empId);
+        Cache.ValueWrapper valueMapper = cache.get("empId");
+        return "empId";
+
+    }
+
+    @CachePut(value = "employeeCache", key = "#updatedValue")
+    public String updateEmployee(String updatedValue) {
+//    	Cache cache = cacheManager.getCache("employeeCache");
+//    	Cache.ValueWrapper valueMapper = cache.get(updatedValue);
+//    	Object obje = (String)valueMapper.get();
+        System.out.println("Update the record with id : " + updatedValue);
+        return updatedValue;
+    }
+
+    @Override
+    @CacheEvict(value = "employeeCache", key = "#empId")
+    public void deleteEmployee(String empId) {
+        System.out.println("Delete the record with id : " + empId);
+    }
+
+    @Override
+    public String getEmployeefromBean(String key) {
+        System.out.println(" the record with id : " + key);
+        Cache cache = cacheManager.getCache("employeeCache");
+//		String cacheName = cache.getName();
+
+        Cache.ValueWrapper valueMapper = cache.get(key);
+        System.out.println(" cacheName : " + valueMapper);
+        Object obje = (String)valueMapper.get();
+        System.out.println(" the obj : " + obje);
+        return (String) obje;
+    }
+
+    @Override
+    public String checkForLog(String aayushGandhi) {
+
+//	    	log.info(LogMarker.SECRET, "{aayushGandhi}", aayushGandhi);
+//	    	log.info(LogMarker.SECRET_LEVEL_ONE,"{aayushGandhi}",aayushGandhi);
+//	    	log.info(LogMarker.SECRET_LEVEL_TWO, "{aayushGandhi}",aayushGandhi);
+//
+        log.info(LogMarker.SECRET, "this will mask all {}", aayushGandhi);
+        log.info(LogMarker.SECRET_LEVEL_ONE, "this will ending  partial {}", aayushGandhi);
+        log.info(LogMarker.SECRET_LEVEL_TWO, "this will starting partial {}", aayushGandhi);
+
+        //	log.info(aayushGandhi);
+
+        return aayushGandhi;
     }
 
 }
