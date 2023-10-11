@@ -1,5 +1,11 @@
 package gov.brewery.controller;
 
+import com.deloitte.nextgen.framework.commons.enums.MessageType;
+import com.deloitte.nextgen.framework.commons.exceptions.IdentifierException;
+import com.deloitte.nextgen.framework.commons.payload.response.ApiResponse;
+import com.deloitte.nextgen.framework.commons.utils.ValidationUtils;
+import com.deloitte.nextgen.framework.commons.utils.WordUtils;
+import gov.brewery.entities.Beer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,7 +25,10 @@ import gov.brewery.model.BeerDTO;
 import gov.brewery.model.BeerStyle;
 import gov.brewery.services.BeerMainService;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Created by jt, Spring Framework Guru.
@@ -95,11 +104,12 @@ public class BeerController {
     }
     
     @GetMapping(value = BEER_PATH+"/test")
-    public Page<BeerDTO> testBeers(@RequestParam(required = false) String beerName,
-                                   @RequestParam(required = false) BeerStyle beerStyle,
-                                   @RequestParam(required = false) Boolean showInventory,
-                                   @RequestParam(required = false) Integer pageNumber,
-                                   @RequestParam(required = false) Integer pageSize) throws JsonParseException{
+    public ResponseEntity<ApiResponse<List<BeerDTO>>> testBeers(@RequestParam(required = false) String beerName,
+                                                                @RequestParam(required = false) BeerStyle beerStyle,
+                                                                @RequestParam(required = false) Integer quantityOnHand,
+                                                                @RequestParam(required = false) Boolean showInventory,
+                                                                @RequestParam(required = false) Integer pageNumber,
+                                                                @RequestParam(required = false) Integer pageSize) throws JsonParseException{
     	if("Error".equals(beerName)) {
     		log.debug("Beer Name Error in test api- in controller");
     		throw new ArrayIndexOutOfBoundsException();
@@ -110,7 +120,27 @@ public class BeerController {
     		log.debug("Beer Name Banned in test api- in controller");
     		throw new BannedBeerException(406, BEER_PATH_ID, BEER_PATH);
     	}
-        return beerService.listBeers(beerName, beerStyle, showInventory, pageNumber, pageSize);
+        if(Objects.isNull(quantityOnHand) || (!ValidationUtils.isPositive(Long.valueOf(quantityOnHand)))){
+            log.error("Number of Bottles can't be null or negative {}", quantityOnHand);
+            throw new IdentifierException(411,"Number of Bottles can't be null or negative");
+        }
+        List<BeerDTO> beers = beerService.findAllBeersByQuantityOnHand(quantityOnHand);
+        printNamesInPlural(
+                beers, beerName, beerStyle,quantityOnHand, showInventory, pageNumber, pageSize);
+        return ApiResponse.success(200)
+                .type(MessageType.SUCCESS)
+                .data(beers);
+    }
+
+    private void printNamesInPlural(List<BeerDTO> beers, String beerName, BeerStyle beerStyle,
+                                      Integer quantityOnHand,
+                                      Boolean showInventory,
+                                      Integer pageNumber,
+                                      Integer pageSize){
+        beers.stream().map(beer -> WordUtils.pluralize(beer.getBeerName())).toList()
+                .forEach(beer -> log.info("Beer Name (in Plural): {}",beer));
+        beers.stream().toList()
+                .forEach(beer -> log.info("Print Beer {}",beer));
     }
 
 

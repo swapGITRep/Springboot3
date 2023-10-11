@@ -1,5 +1,6 @@
 package gov.brewery.entities;
 
+import gov.brewery.model.converter.BeerStyleConverter;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -72,6 +73,7 @@ public class Beer extends TypeOneBaseEntity<UUID>{
     private String beerName;
 
     @NotNull
+    @Convert(converter = BeerStyleConverter.class)
     private BeerStyle beerStyle;
 
     @NotNull

@@ -1,5 +1,8 @@
 package gov.brewery.bootstrap;
 
+import gov.brewery.entities.BeerOrder;
+import gov.brewery.entities.BeerOrderShipment;
+import gov.brewery.repositories.BeerOrderRepository;
 import lombok.RequiredArgsConstructor;
 
 import org.apache.commons.lang3.StringUtils;
@@ -33,6 +36,8 @@ import java.util.UUID;
 public class BootstrapData implements CommandLineRunner {
     private final BeerRepository beerRepository;
     private final CustomerRepository customerRepository;
+
+    private final BeerOrderRepository beerOrderRepository;
     private final BeerCsvService beerCsvService;
 
     @Transactional
@@ -41,6 +46,7 @@ public class BootstrapData implements CommandLineRunner {
         loadBeerData();
         loadCsvData();
         loadCustomerData();
+        loadBeerOrderData();
     }
 
     private void loadCsvData() throws FileNotFoundException {
@@ -179,6 +185,31 @@ public class BootstrapData implements CommandLineRunner {
             customerRepository.saveAll(Arrays.asList(customer1, customer2, customer3));
         }
 
+    }
+
+    private void loadBeerOrderData() {
+        if(beerOrderRepository.count() ==0 ){
+            Beer beer1 = new Beer();
+            beer1.setBeerName("Super 1000");
+            beer1.setBeerStyle(BeerStyle.IPA);
+            beer1.setUpc("12356");
+            beer1.setPrice(new BigDecimal("11.99"));
+            beer1.setQuantityOnHand(190);
+            Customer customer1 = Customer.builder()
+                    .id(UUID.randomUUID())
+                    .name("Customer 4")
+                    .email("customer4@deloitte.com")
+                    .createdDate(LocalDateTime.now())
+                    .updateDate(LocalDateTime.now())
+                    .build();
+            BeerOrderShipment beerOrderShipment = new BeerOrderShipment();
+            beerOrderShipment.setTrackingNumber(UUID.randomUUID().toString());
+            BeerOrder beerOrder1 = new BeerOrder();
+            beerOrder1.setCustomer(customer1);
+            beerOrder1.setId(UUID.randomUUID());
+            beerOrder1.setBeerOrderShipment(beerOrderShipment);
+            beerOrderRepository.save(beerOrder1);
+        }
     }
 
 

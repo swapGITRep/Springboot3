@@ -1,7 +1,12 @@
 package gov.brewery.services;
 
+import gov.brewery.entities.QBeer;
+import gov.brewery.model.CustomerResponseDTO;
+import gov.brewery.repositories.IBeerCustomRepository;
+import gov.brewery.repositories.ICustomerCustomRepository;
 import lombok.RequiredArgsConstructor;
 
+import org.apache.commons.collections4.IterableUtils;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +22,8 @@ import gov.brewery.model.BeerDTO;
 import gov.brewery.model.BeerStyle;
 import gov.brewery.repositories.BeerRepo;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -30,7 +37,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class BeerServiceJPA implements BeerMainService {
     private final BeerRepository beerRepository;
     private final BeerMapper beerMapper;
-
+    private final IBeerCustomRepository beerCustomRepository;
     private static final int DEFAULT_PAGE = 0;
     private static final int DEFAULT_PAGE_SIZE = 25;
 
@@ -169,4 +176,14 @@ public class BeerServiceJPA implements BeerMainService {
 
         return atomicReference.get();
     }
+
+    public List<BeerDTO> findAllBeersByQuantityOnHand(Integer quantityOnHand){
+        List<BeerDTO> beerDTOS= new ArrayList<>();
+        beerCustomRepository.findAllBeersByQuantityOnHand(quantityOnHand).forEach(beer -> {
+            BeerDTO beerDTO = beerMapper.toResponse(beer);
+            beerDTOS.add(beerDTO);
+        });
+        return beerDTOS;
+    }
+
 }

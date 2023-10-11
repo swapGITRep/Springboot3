@@ -1,5 +1,6 @@
 package gov.brewery.services;
 
+import gov.brewery.model.CustomerResponseDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -96,6 +97,12 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public List<CustomerDTO> getAllCustomers() {
         return new ArrayList<>(customerMap.values());
+    }
+
+    @Override
+    @Deprecated
+    public List<CustomerResponseDTO> findAllCustomerWhoOrdered() {
+        return null;
     }
 }
 

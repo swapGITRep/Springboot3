@@ -1,5 +1,6 @@
 package gov.brewery.controller;
 
+import gov.brewery.model.CustomerResponseDTO;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpHeaders;
@@ -68,6 +69,11 @@ public class CustomerController {
     @GetMapping(CUSTOMER_PATH)
     public List<CustomerDTO> listAllCustomers(){
         return customerService.getAllCustomers();
+    }
+
+    @GetMapping(CUSTOMER_PATH+"/order")
+    public List<CustomerResponseDTO> listAllCustomersWhoOrdered(){
+        return customerService.findAllCustomerWhoOrdered();
     }
 
     @GetMapping(value = CUSTOMER_PATH_ID)

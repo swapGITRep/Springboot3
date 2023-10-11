@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import gov.brewery.model.CustomerDTO;
+import gov.brewery.model.CustomerResponseDTO;
 
 /**
  * Created by jt, Spring Framework Guru.
@@ -22,4 +23,6 @@ public interface CustomerService {
     Boolean deleteCustomerById(UUID customerId);
 
     Optional<CustomerDTO> patchCustomerById(UUID customerId, CustomerDTO customer);
+
+    List<CustomerResponseDTO> findAllCustomerWhoOrdered();
 }

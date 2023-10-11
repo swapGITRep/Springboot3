@@ -40,4 +40,17 @@ public class BeerDTO {
 //    private LocalDateTime createdDate;
 //    private LocalDateTime updateDate;
 
+
+    @Override
+    public String toString() {
+        return "BeerDTO{" +
+                "id=" + id +
+                ", version=" + version +
+                ", beerName='" + beerName + '\'' +
+                ", beerStyle=" + beerStyle +
+                ", upc='" + upc + '\'' +
+                ", quantityOnHand=" + quantityOnHand +
+                ", price=" + price +
+                '}';
+    }
 }

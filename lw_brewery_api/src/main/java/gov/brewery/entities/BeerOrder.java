@@ -83,7 +83,7 @@ public class BeerOrder extends TypeZeroBaseEntity<UUID>{
 
     private String customerRef;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Customer customer;
 
     public void setCustomer(Customer customer) {

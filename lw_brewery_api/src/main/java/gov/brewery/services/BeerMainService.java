@@ -1,10 +1,13 @@
 package gov.brewery.services;
 
+import gov.brewery.entities.Beer;
+import gov.brewery.model.CustomerResponseDTO;
 import org.springframework.data.domain.Page;
 
 import gov.brewery.model.BeerDTO;
 import gov.brewery.model.BeerStyle;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,4 +27,7 @@ public interface BeerMainService {
     Boolean deleteById(UUID beerId);
 
     Optional<BeerDTO> patchBeerById(UUID beerId, BeerDTO beer);
+
+    List<BeerDTO> findAllBeersByQuantityOnHand(Integer quantityOnHand);
+
 }

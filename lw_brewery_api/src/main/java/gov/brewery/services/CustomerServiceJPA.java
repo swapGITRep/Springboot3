@@ -1,5 +1,7 @@
 package gov.brewery.services;
 
+import gov.brewery.model.CustomerResponseDTO;
+import gov.brewery.repositories.ICustomerCustomRepository;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.context.annotation.Primary;
@@ -25,6 +27,7 @@ import java.util.stream.Collectors;
 public class CustomerServiceJPA implements CustomerService {
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
+    private final ICustomerCustomRepository customerCustomRepository;
 
     @Override
     public Optional<CustomerDTO> getCustomerById(UUID uuid) {
@@ -84,5 +87,9 @@ public class CustomerServiceJPA implements CustomerService {
         });
 
         return atomicReference.get();
+    }
+
+    public List<CustomerResponseDTO> findAllCustomerWhoOrdered(){
+        return customerCustomRepository.findAllCustomerWhoOrdered();
     }
 }

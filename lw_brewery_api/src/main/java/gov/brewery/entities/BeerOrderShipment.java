@@ -42,7 +42,7 @@ public class BeerOrderShipment extends TypeZeroBaseEntity<UUID>{
 //    @Version
 //    private Long version;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private BeerOrder beerOrder;
 
     private String trackingNumber;

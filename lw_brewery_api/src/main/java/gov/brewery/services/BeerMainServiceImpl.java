@@ -1,5 +1,7 @@
 package gov.brewery.services;
 
+import gov.brewery.entities.Beer;
+import gov.brewery.model.CustomerResponseDTO;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.data.domain.Page;
@@ -92,6 +94,12 @@ public class BeerMainServiceImpl implements BeerMainService {
         }
 
         return Optional.of(existing);
+    }
+
+    @Override
+    @Deprecated
+    public List<BeerDTO> findAllBeersByQuantityOnHand(Integer quantityOnHand) {
+        return null;
     }
 
     @Override
